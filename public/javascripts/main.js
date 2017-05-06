@@ -3,10 +3,56 @@
  */
 
 $(document).ready(function () {
+    var ref = new Firebase('https://craftyjsfinalgame.firebaseio.com/');
+
     //game start
     var screenWidth = 800;
     var screenHeight = 400;
     var hitCounter = 0;
+    var highscore = [];
+
+    //updates the tempHighscore evrytime that happens an update in highscore
+    ref.child('HighScore').orderByValue().on("value", function(childSnapshot) {
+
+        var valu = childSnapshot.val();
+        var tempHighscore = [];
+
+        $.each( valu, function( index, value ) {
+            tempHighscore.push(value.score);
+        });
+
+        //update the list in the game with the one in the databsae
+        if(tempHighscore.length<1){
+            highscore = [1,2,3,4,5,6,7,8,9];
+        }else{
+            highscore = $.merge([],tempHighscore);
+        }
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+
+    $('#aButton').on('click', function () {
+
+        var tempHighscore = $.merge([],highscore);
+
+        //delets the database
+        ref.child('HighScore').remove();
+        $('#content').empty();
+
+        //saves the highscore in the datacase
+        for (var i = 0; i<tempHighscore.length;i++){
+
+            ref.child('HighScore').push().set({
+                score: (++tempHighscore[i]).toString()
+            });
+
+            $('#content').append(
+                $('<li>').append(
+                    $('<span>').attr('class', 'tab').append(tempHighscore[i])
+                ));
+        };
+    });
+
 
     Crafty.init(screenWidth,screenHeight, document.getElementById('game'));
 

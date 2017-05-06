@@ -4,7 +4,7 @@ html
     title= title
     link(rel='stylesheet', href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css', integrity='sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ', crossorigin='anonymous')
-    link(rel='stylesheet', href='/stylesheets/css/font-awesome.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', media='screen')
     link(rel='stylesheet', href='/stylesheets/style.css')
 
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
@@ -12,10 +12,12 @@ html
     script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js', integrity='sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb', crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js', integrity='sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn', crossorigin='anonymous')
     script(type="text/javascript", src='https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js')
+    script(src='https://cdn.firebase.com/js/client/2.4.2/firebase.js')
     script(src='javascripts/main.js')
 
   body
+    ul(id='content')
     i(class='fa fa-spinner fa-pulse fa-3x fa-fw')
-    button(type='button', class='btn btn-primary') Primary
+    button(type='button', class='btn btn-primary' id='aButton') Primary
     block content
     div(id='game',style='margin:0 auto;')
