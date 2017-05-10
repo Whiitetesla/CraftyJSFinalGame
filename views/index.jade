@@ -4,3 +4,29 @@ block content
   h1= title
   p Welcome to #{title}
 
+
+  #scoreList
+    table
+      thead
+        th name
+        th score
+        th Delete?
+      tbody
+
+    // ADD USER
+    h2 Add User
+    #addScore
+      fieldset
+        input#inputName(type='text', placeholder='Name')
+        br
+        input#inputScore(type='text', placeholder='score')
+        br
+        button(type='button', class='btn btn-primary' id='btnAddScore') Add Score
+    // /ADD USER
+
+    h2 User Info
+    p
+    strong score:
+    | <span id='userInfoscore'></span>
+
+    div(id='game',style='margin:0 auto;')

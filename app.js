@@ -5,6 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// Add for Database
+// New code that knows mongo and a nice abstraction layer
+var mongo = require('mongodb');
+var monk = require('monk');
+
+// use our connection string copied from the cloud mongo.
+var db = monk('mongodb://Whiitetesla:howtomakeapassword@ds021346.mlab.com:21346/craftyjsfinalgamedb');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -21,6 +29,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req,res,next){ req.db = db; next(); });
 
 app.use('/', index);
 app.use('/users', users);

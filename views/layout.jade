@@ -7,17 +7,16 @@ html
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css', media='screen')
     link(rel='stylesheet', href='/stylesheets/style.css')
 
+    //jquery
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js')
+    //bootstrap
     script(src='https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js', integrity='sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb', crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js', integrity='sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn', crossorigin='anonymous')
+    //craftyjs
     script(type="text/javascript", src='https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js')
-    script(src='https://cdn.firebase.com/js/client/2.4.2/firebase.js')
+
     script(src='javascripts/main.js')
 
   body
-    ul(id='content')
-    i(class='fa fa-spinner fa-pulse fa-3x fa-fw')
-    button(type='button', class='btn btn-primary' id='aButton') Primary
     block content
-    div(id='game',style='margin:0 auto;')
