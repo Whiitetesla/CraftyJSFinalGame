@@ -21,7 +21,7 @@ router.post('/addhighscore', function (req, res) {
     });
 });
 
-/* * DELETE to deleteuser. */
+/* * DELETE to deletescore. */
 router.delete('/deletescore/:id', function (req, res) {
     var db = req.db;
     var collection = db.get('Highscore');

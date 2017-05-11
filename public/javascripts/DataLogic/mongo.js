@@ -65,9 +65,9 @@ function readScore() {
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function () {
             tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowscore" rel="' + this.name + '">'
+            tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
                 + this.name + '</a></td>';
-            tableContent += '<td><a href="#" class="linkshowscore" rel="' + this.name + '">'
+            tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
                 + this.score + '</a></td>';
             tableContent += '<td><a href="#" class="linkdeletescore" rel="' + this._id + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
             tableContent += '</tr>';
@@ -82,13 +82,11 @@ function readAScore(event) {
     // Prevent Link from Firing
     event.preventDefault();
     // Retrieve username from link rel attribute
-    var thisScoreName = $(this).attr('rel');
-    console.log(thisScoreName);
+    var thisScoreid = $(this).attr('rel');
     // Get Index of object based on id value
     var arrayPosition = scoreListData.map(function (arrayItem) {
-        return arrayItem.name;
-    }).indexOf(thisScoreName);
-
+        return arrayItem._id;
+    }).indexOf(thisScoreid);
 
     // Get our User Object
     var thisScoreObject = scoreListData[arrayPosition];
