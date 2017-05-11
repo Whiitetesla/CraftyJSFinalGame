@@ -22,7 +22,7 @@ router.post('/addhighscore', function (req, res) {
 });
 
 /* * DELETE to deleteuser. */
-router.delete('/deleteuser/:id', function (req, res) {
+router.delete('/deletescore/:id', function (req, res) {
     var db = req.db;
     var collection = db.get('Highscore');
     var userToDelete = req.params.id;

@@ -14,7 +14,8 @@ var monk = require('monk');
 var db = monk('mongodb://Whiitetesla:howtomakeapassword@ds021346.mlab.com:21346/craftyjsfinalgamedb');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./routes/score');
+
 
 var app = express();
 
