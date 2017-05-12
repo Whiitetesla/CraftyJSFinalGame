@@ -94,14 +94,6 @@ function readAScore(event) {
     $('#scoreInfoName').text('id: ' + thisScoreObject._id + ', name: ' + thisScoreObject.name + ', score: ' + thisScoreObject.score);
 }
 
-//Update
-function updateScore(event) {
-    // Prevent Link from Firing
-    event.preventDefault();
-
-}
-
-
 // Delete
 function deleteScore(event) {
     // Prevent Link from Firing
