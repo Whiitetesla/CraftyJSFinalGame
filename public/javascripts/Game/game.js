@@ -4,16 +4,20 @@
 
 var screenWidth = 800;
 var screenHeight = 400;
-var hitCounter = 0;
+var score = 0;
 var gameRunning = false;
-var hitText;
+var scoreText;
 var player1;
 var keypressed = "";
+
 
 $(document).keydown(function(e){
 
     if (typeof event !== 'undefined') {
         keypressed = event.keyCode;
+        if(isGameRuning() && Crafty.isPaused()){
+            pause();
+        }
     }
     else if (e) {
         keypressed = e.which;
@@ -523,8 +527,16 @@ function StartGame() {
             .attr({x: 0, y: 0, w: 10, h: screenHeight*2})
             .color('#a50001');
 
+        Crafty.e('2D,DOM, Color, Solid, left')
+            .attr({x: -1, y: 0, w: 0, h: screenHeight*2})
+            .color('#a50001');
+
         Crafty.e('Wall, 2D, Canvas, Solid, Color')
             .attr({x: 790, y: 0, w: 10, h: screenHeight*2})
+            .color('#003dc5');
+
+        Crafty.e('2D,DOM, Color, Solid, left')
+            .attr({x: 800, y: 0, w: 0, h: screenHeight*2})
             .color('#003dc5');
 
         Crafty.e('Celling, 2D, Canvas, Solid, Color')
@@ -532,63 +544,98 @@ function StartGame() {
             .color('#333333');
 
         player1 = Crafty.e('Player, Canvas, Solid, Twoway, Gravity, Collision, paddle1')
-            .attr({x: screenWidth/2, y: 320, w: 60, h: 15})
+            .attr({x: screenWidth/2, y: 340, w: 60, h: 15})
             .twoway(400,1)
             .gravity('Floor')
             .gravityConst(250)
             .origin('center')
-            .sprite('paddle1')
-            .onHit("Wall", function (hitDatas) {
-                console.log(this[0]);
-                if(keypressed === '37'){
-                    this.x += this[0];
-                }
-                else if(keypressed === '39'){
-                    this.x -= hitDatas.speed;
-                }
+            .bind('Moved', function (evt) {
+                if(this.hit('left'))
+                    this[evt.axis] = evt.oldValue;
+                if(this.hit('left'))
+                    this[evt.axis] = evt.oldValue;
             });
 
 
-        hitText = Crafty.e('2D, DOM, Text')
+        scoreText = Crafty.e('2D, DOM, Text')
             .attr({
                 x: screenWidth - 100,
                 y: 10
             })
             .textColor('#515151');
 
-        hitText.text('Hit:' + hitCounter);
+        scoreText.text('Hit:' + score);
 
-        hitText.textFont({
+        scoreText.textFont({
             size: '30px',
             weight: 'bold'
         });
         //game end
 
-        drop();
+        SpawnBricks();
+        SpawnBall();
+        pause();
     });
 }
 
-function drop() {
+function SpawnBricks() {
+    var size = 8;
+    var width = 60;
+    var height = 15;
+    for (i = 0; i < size; i++) {
+        for(j = 0; j < size; j++){
+            var spriteName = 'Brick, 2D, Canvas, Solid, ';
+
+            switch (j){
+                case 0:
+                    spriteName += 'tileBlack';
+                    break;
+                case 1:
+                    spriteName += 'tileBlue';
+                    break;
+                case 2:
+                    spriteName += 'tileGreen';
+                    break;
+                case 3:
+                    spriteName += 'tileGray';
+                    break;
+                case 4:
+                    spriteName += 'tileOrange';
+                    break;
+                case 5:
+                    spriteName += 'tilePink';
+                    break;
+                case 6:
+                    spriteName += 'tileRed';
+                    break;
+                case 7:
+                    spriteName += 'tileYellow';
+                    break;
+
+            }
+
+            Crafty.e(spriteName)
+                .attr({x: (i*width)+150, y: (j*height)+60, w: width, h: height});
+        }
+    }
+}
+
+function SpawnBall() {
     var vy = 2;
-    var vx = 0;
-    Crafty.e('2D, Canvas, Text, Solid, Collision, Tween, ballGrey_04')
+    var vx = (Math.floor(Math.random()*2));
+    Crafty.e('Ball,2D, Canvas, Text, Solid, Collision, Tween, ballGrey_04')
         .attr({x: 400, y: 200,w: 30, h: 30})
-        .sprite('ballGrey_04')
 
         .onHit("Player", function (hitDatas) {
-            //this.destroy();
-            hitCounter++;
-            hitText.text('Hit:' + hitCounter);
             vy = -vy;
-            vx = -vx;
 
             if(keypressed == '37'){
-                vx = -(Math.floor(Math.random()*10)+1);
+                vx = -vx;
+                vx = -(Math.floor(Math.random()*5)+1);
             }
             else if(keypressed == '39'){
-                vx = Math.floor(Math.random()*10)+1;
-            }else{
-                vx = 0;
+                vx = -vx;
+                vx = Math.floor(Math.random()*5)+1;
             }
 
             vy = -(Math.floor(Math.random()*5)+2);
@@ -600,15 +647,25 @@ function drop() {
         .onHit("Celling", function (hitDatas) {
             vy = -vy;
         })
+        .onHit("Brick", function (hitDatas) {
+            vy = -vy;
+            for(i = 0; i< hitDatas.length; i++){
+                hitDatas[i].obj.destroy();
+                score++;
+                scoreText.text('Hit:' + score);
+            }
+
+        })
         .bind("EnterFrame", function () {
             this.y += vy;
             this.x += vx;
-            if (this.y > screenHeight)
+            if (this.y > screenHeight){
                 this.destroy();
+                StopGame();
+            }
         });
 }
 
-//pause funktion
 function pause() {
     Crafty.pause();
 }
@@ -616,3 +673,4 @@ function pause() {
 function isGameRuning() {
     return gameRunning;
 }
+
