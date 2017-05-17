@@ -2,8 +2,8 @@
  * Created by Niels Hviid Lund on 07-05-2017.
  */
 
-var screenWidth = 800;
-var screenHeight = 400;
+var screenWidth = 1200;
+var screenHeight = 800;
 var score = 0;
 var gameRunning = false;
 var scoreText;
@@ -518,44 +518,35 @@ function StartGame() {
     };
 
     Crafty.load(assetsObj, function () { //when loaded
+        var wallThickness = 10;
+
         Crafty.init(screenWidth, screenHeight, document.getElementById('game'));
 
         Crafty.e('Floor, 2D, Canvas, Solid, Color')
-            .attr({x: 0, y: 350, w: screenWidth * 2, h: 10})
+            .attr({x: 0, y: screenHeight/1.1, w: screenWidth * 2, h: wallThickness})
 
         Crafty.e('Wall, 2D, Canvas, Solid, Color')
-            .attr({x: 0, y: 0, w: 10, h: screenHeight*2})
-            .color('#a50001');
-
-        Crafty.e('2D,DOM, Color, Solid, left')
-            .attr({x: -1, y: 0, w: 0, h: screenHeight*2})
+            .attr({x: 0, y: 0, w: wallThickness, h: screenHeight*2})
             .color('#a50001');
 
         Crafty.e('Wall, 2D, Canvas, Solid, Color')
-            .attr({x: 790, y: 0, w: 10, h: screenHeight*2})
-            .color('#003dc5');
-
-        Crafty.e('2D,DOM, Color, Solid, left')
-            .attr({x: 800, y: 0, w: 0, h: screenHeight*2})
+            .attr({x: screenWidth-wallThickness, y: 0, w: wallThickness, h: screenHeight*2})
             .color('#003dc5');
 
         Crafty.e('Celling, 2D, Canvas, Solid, Color')
-            .attr({x: 0, y: 0, w: screenWidth * 2, h: 10})
+            .attr({x: 0, y: 0, w: screenWidth * 2, h: wallThickness})
             .color('#333333');
 
         player1 = Crafty.e('Player, Canvas, Solid, Twoway, Gravity, Collision, paddle1')
-            .attr({x: screenWidth/2, y: 340, w: 60, h: 15})
+            .attr({x: screenWidth/2, y: screenHeight/1.1, w: screenWidth/10, h: screenHeight/32})
             .twoway(400,1)
             .gravity('Floor')
             .gravityConst(250)
             .origin('center')
             .bind('Moved', function (evt) {
-                if(this.hit('left'))
-                    this[evt.axis] = evt.oldValue;
-                if(this.hit('left'))
+                if(this.hit('Wall'))
                     this[evt.axis] = evt.oldValue;
             });
-
 
         scoreText = Crafty.e('2D, DOM, Text')
             .attr({
@@ -579,11 +570,11 @@ function StartGame() {
 }
 
 function SpawnBricks() {
-    var size = 8;
-    var width = 60;
-    var height = 15;
-    for (i = 0; i < size; i++) {
-        for(j = 0; j < size; j++){
+    var bricArraySize = 8;
+    var width = screenWidth/10;
+    var height = screenHeight/20;
+    for (i = 0; i < bricArraySize; i++) {
+        for(j = 0; j < bricArraySize; j++){
             var spriteName = 'Brick, 2D, Canvas, Solid, ';
 
             switch (j){
@@ -615,7 +606,7 @@ function SpawnBricks() {
             }
 
             Crafty.e(spriteName)
-                .attr({x: (i*width)+150, y: (j*height)+60, w: width, h: height});
+                .attr({x: (i*width)+width, y: (j*height)+height*2, w: width, h: height});
         }
     }
 }
@@ -624,7 +615,7 @@ function SpawnBall() {
     var vy = 2;
     var vx = (Math.floor(Math.random()*2));
     Crafty.e('Ball,2D, Canvas, Text, Solid, Collision, Tween, ballGrey_04')
-        .attr({x: 400, y: 200,w: 30, h: 30})
+        .attr({x: screenWidth/2, y: screenHeight/1.3,w: screenWidth/30, h: screenHeight/20})
 
         .onHit("Player", function (hitDatas) {
             vy = -vy;
