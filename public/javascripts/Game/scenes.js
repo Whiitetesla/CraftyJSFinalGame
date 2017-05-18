@@ -61,7 +61,7 @@ Crafty.defineScene('PongGame', function () {
     });
 
     this.show_lose = this.bind('LOSE', function () {
-        Crafty.scene('Lose');
+        Crafty.scene('TowerJumper');
     })
 }, function () {
     this.unbind('BrickBroken', this.show_victory);
@@ -69,12 +69,36 @@ Crafty.defineScene('PongGame', function () {
 });  // end of game scenes
 
 Crafty.defineScene('TowerJumper', function () {
+    var wallThickness = 10;
+
+    Crafty.e('Floor, 2D, Canvas, Solid, Color')
+        .attr({x: 0, y: screenHeight/1.1, w: screenWidth * 2, h: wallThickness})
+        .color('#b500cf');
+
+    Crafty.e('Wall, 2D, Canvas, Solid, Color')
+        .attr({x: 0, y: 0, w: wallThickness, h: screenHeight*2})
+        .color('#a50001');
+
+    Crafty.e('Wall, 2D, Canvas, Solid, Color')
+        .attr({x: screenWidth-wallThickness, y: 0, w: wallThickness, h: screenHeight*2})
+        .color('#003dc5');
+
+    Crafty.e('Wall, 2D, Canvas, Solid, Color')
+        .attr({x: 0, y: screenHeight-300, w: screenWidth * 2, h: wallThickness})
+        .color('#94f700');
+
+    Crafty.e('Celling, 2D, Canvas, Solid, Color')
+        .attr({x: 0, y: 0, w: screenWidth * 2, h: wallThickness})
+        .color('#333333');
+
     Crafty.e('2D, DOM, Text')
         .attr({ x: 0, y: 0 })
-        .text('TowerJumper!');
+        .text('TowerJumper!')
+        .textColor('#ffffff');
 
-    this.restart_game = function() {Crafty.enterScene('Greetings');};
-    this.bind('KeyDown', this.restart_game);
+
+    var player = Crafty.e('TowerPlayer');
+    player.canJump = false;
 
     this.show_victory = this.bind('BrickBroken', function () {
         if (!Crafty('Brick').length) {

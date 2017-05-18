@@ -496,15 +496,13 @@ function StartGame() {
     };
 
     Crafty.load(assetsObj, function () { //when loaded
-        
+
         Crafty.init(screenWidth, screenHeight, document.getElementById('game'));
         Crafty.enterScene('Greetings');
         //game end
     });
     $('#game').focus();
 }
-
-
 
 function pause() {
     Crafty.pause();
