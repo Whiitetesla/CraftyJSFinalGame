@@ -14,8 +14,7 @@ var monk = require('monk');
 var db = monk('mongodb://Whiitetesla:howtomakeapassword@ds021346.mlab.com:21346/craftyjsfinalgamedb');
 
 var index = require('./routes/index');
-var users = require('./routes/score');
-
+var score = require('./routes/score');
 
 var app = express();
 
@@ -33,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req,res,next){ req.db = db; next(); });
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/score', score);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,10 +4,9 @@ block content
   h1= title
   p Welcome to #{title}
 
-
   #scoreList
-    table
-      thead
+    table(class='table table-striped')
+      thead(class='thead-inverse')
         th name
         th score
         th Delete?

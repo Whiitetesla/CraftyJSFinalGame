@@ -36,7 +36,7 @@ function createScore(event) {
             'score': $('#addScore fieldset input#inputScore').val()
         };
         // Use AJAX to post the object to our adduserservice
-        $.ajax({type: 'POST', data: newScore, url: '/users/addhighscore', dataType: 'JSON'}).done(function (response) {
+        $.ajax({type: 'POST', data: newScore, url: '/score/addhighscore', dataType: 'JSON'}).done(function (response) {
             // Check for successful (blank) response
             if (response.msg === '') {
                 // Clear the form inputs
@@ -57,10 +57,14 @@ function createScore(event) {
 
 // Read all
 function readScore() {
+    $.getJSON('/score/highscoress', function (data) {
+        console.log(data);
+    });
+
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
-    $.getJSON('/users/highscore', function (data) {
+    $.getJSON('/score/highscore', function (data) {
         scoreListData = data;
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function () {
@@ -104,7 +108,7 @@ function deleteScore(event) {
     if (confirmation === true) {
         // If they did, do our delete
         $.ajax({
-            type: 'DELETE', url: '/users/deletescore/' + $(this).attr('rel')
+            type: 'DELETE', url: '/score/deletescore/' + $(this).attr('rel')
         }).done(function (response) {
             // Check for a successful (blank) response
             if (response.msg === '') {

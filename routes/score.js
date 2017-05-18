@@ -30,6 +30,10 @@ router.delete('/deletescore/:id', function (req, res) {
         res.send((err === null) ? {msg: ''} : {msg: 'error: ' + err});
     });
 });
+
+router.get('/highscoress', function (req, res) {
+    res.json('HelloWorld');
+});
 module.exports = router;
 
 
