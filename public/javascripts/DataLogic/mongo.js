@@ -6,21 +6,22 @@ var scoreListData = [];
 
 //setup the database and all the button functions
 function setupDB() {
-    // Populate the user table on initial pagel oad
-    readScore();
+    // Populate the user table on initial page oad
+    //readScore();
     // Add button click
     $('#btnAddScore').on('click', createScore);
 
+
     //show user link click
-    $('#scoreList table tbody').on('click', 'td a.linkshowscore', readAScore);
+    //$('#scoreList table tbody').on('click', 'td a.linkshowscore', readAScore);
     // Delete User link click
-    $('#scoreList table tbody').on('click', 'td a.linkdeletescore', deleteScore);
+    //$('#scoreList table tbody').on('click', 'td a.linkdeletescore', deleteScore);
 }
 
 // Create
 function createScore(event) {
     // Prevent Link from Firing
-    event.preventDefault();
+    //event.preventDefault();
     // Super basic validation - increase errorCountvariable if any fields are blank
     var errorCount = 0;
     $('#addScore input').each(function (index, val) {
@@ -36,7 +37,7 @@ function createScore(event) {
             'score': $('#addScore fieldset input#inputScore').val()
         };
         // Use AJAX to post the object to our adduserservice
-        $.ajax({type: 'POST', data: newScore, url: '/users/addhighscore', dataType: 'JSON'}).done(function (response) {
+        $.ajax({type: 'POST', data: newScore, url: '/score/addhighscore', dataType: 'JSON'}).done(function (response) {
             // Check for successful (blank) response
             if (response.msg === '') {
                 // Clear the form inputs
@@ -53,14 +54,15 @@ function createScore(event) {
         alert('Please fill in all fields');
         return false;
     }
-};
+}
 
 // Read all
 function readScore() {
+
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
-    $.getJSON('/users/highscore', function (data) {
+    $.getJSON('/score/highscore', function (data) {
         scoreListData = data;
         // For each item in our JSON, add a table row and cells to the content string
         $.each(data, function () {
@@ -69,7 +71,6 @@ function readScore() {
                 + this.name + '</a></td>';
             tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
                 + this.score + '</a></td>';
-            tableContent += '<td><a href="#" class="linkdeletescore" rel="' + this._id + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
@@ -104,7 +105,7 @@ function deleteScore(event) {
     if (confirmation === true) {
         // If they did, do our delete
         $.ajax({
-            type: 'DELETE', url: '/users/deletescore/' + $(this).attr('rel')
+            type: 'DELETE', url: '/score/deletescore/' + $(this).attr('rel')
         }).done(function (response) {
             // Check for a successful (blank) response
             if (response.msg === '') {
@@ -119,3 +120,4 @@ function deleteScore(event) {
         return false;
     }
 }
+

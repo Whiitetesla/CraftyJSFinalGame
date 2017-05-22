@@ -1,0 +1,13 @@
+//
+   Created by Niels Hviid Lund on 19-05-2017.
+
+
+h2 Add Your Score #{score}
+#addScore
+    fieldset
+        input#inputName(type='text', placeholder='Name')
+        br
+        input#inputScore(type='text', placeholder='score', disabled=true, value='#{score}')
+        br
+        button(type='button', class='btn btn-primary' id='btnAddScore', onclick='addAscore()') Add Score
+

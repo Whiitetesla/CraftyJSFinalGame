@@ -3,9 +3,10 @@
  */
 
 $(document).ready(function () {
-        setupDB();
+        //setupDB();
 
         $('#btnPlayGame').on('click', playGame);
+
     },
 
     function (e) { //progress
@@ -23,5 +24,6 @@ function playGame() {
         StopGame();
     }
 }
+
 
 

@@ -2,10 +2,11 @@
  * Created by Niels Hviid Lund on 07-05-2017.
  */
 
-var screenWidth = 800;
-var screenHeight = 400;
-var hitCounter = 0;
+var screenWidth = 1200;
+var screenHeight = 800;
+var score;
 var gameRunning = false;
+var scoreText;
 
 function StopGame() {
     gameRunning = false;
@@ -16,6 +17,7 @@ function StopGame() {
 function StartGame() {
     $('body').append("<div id='game' style='margin:0 auto;'></div>");
     //game start
+    gameRunning = true;
     var assetsObj = {
         "audio": {},
         "images": [],
@@ -43,13 +45,13 @@ function StartGame() {
             },
             //Balls
             "/images/Balls/spritesheet_balls.png": {
-                "tile": 128,
-                "tileh": 128,
+                "tile": 149,
+                "tileh": 150,
                 "map": {
-                    "ballGrey_01": [2, 5],
-                    "ballGrey_02": [2, 6],
-                    "ballGrey_03": [3, 1],
-                    "ballGrey_04": [3, 2]
+                    "ballGrey_01": [2, 4],
+                    "ballGrey_02": [2, 5],
+                    "ballGrey_03": [3, 0],
+                    "ballGrey_04": [3, 1]
                 }
             },
             //Coins
@@ -494,84 +496,14 @@ function StartGame() {
     };
 
     Crafty.load(assetsObj, function () { //when loaded
+
         Crafty.init(screenWidth, screenHeight, document.getElementById('game'));
-
-        Crafty.e('Floor, 2D, Canvas, Solid, Color')
-            .attr({x: 0, y: 350, w: screenWidth * 2, h: 10})
-            .color('#333333');
-
-        var player1 = Crafty.e('Player, Canvas, Solid, Twoway, Gravity, Collision, Player1_ready')
-            .attr({x: 20, y: 0, w: 30, h: 30})
-            .twoway(100)
-            .gravity('Floor')
-            .gravityConst(250)
-            .origin('center')
-            .sprite('Player1_ready')
-            .bind("EnterFrame", function () {
-                if (this.x === screenWidth) {
-                    pause();
-                    Crafty.e('2D, DOM, Text').attr({
-                        x: screenWidth / 2,
-                        y: screenHeight / 2
-                    }).text("Stage 1 Clear").textFont({size: '20px', weight: 'bold'}).textColor('#515151');
-                }
-            });
-
-        var hitText = Crafty.e('2D, DOM, Text')
-            .attr({
-                x: screenWidth - 100,
-                y: 10
-            })
-            .textColor('#515151');
-
-        hitText.text('Hit:' + hitCounter);
-
-        hitText.textFont({
-            size: '30px',
-            weight: 'bold'
-        });
+        Crafty.enterScene('Greetings');
         //game end
     });
-    gameRunning = true;
+    $('#game').focus();
 }
 
-function drop() {
-    var randomx = Math.floor((Math.random() * screenWidth) + 50) + 20;
-
-    Crafty.e('2D, Canvas, Text, Solid, Gravity, Collision, Tween')
-        .attr({x: randomx, y: 0})
-        .text(function () {
-            return String.fromCharCode(1e2 + Math.random() * 33)
-        })
-        .textColor('#00ff00')
-        .textFont({size: '20px', family: 'Georgia'})
-        .gravity()
-        .gravityConst(50)
-        .tween({alpha: 0.2}, 5000)
-        .checkHits('Player')
-        .bind("HitOn", function () {
-            this.destroy();
-            hitCounter++;
-            hitText.text('Hit:' + hitCounter);
-            if (hitCounter === 6) {
-                player1.x = 20;
-                hitCounter = 0;
-                hitText.text('Hit:' + hitCounter);
-            }
-        })
-        .bind("EnterFrame", function () {
-            if (this.y > screenHeight)
-                this.destroy();
-        });
-}
-
-Crafty.bind("EnterFrame", function () {
-
-    if (Crafty.frame() % 3 === 0)
-        drop();
-});
-
-//pause funktion
 function pause() {
     Crafty.pause();
 }
@@ -579,3 +511,4 @@ function pause() {
 function isGameRuning() {
     return gameRunning;
 }
+
