@@ -184,10 +184,11 @@ function ShowHighScore() {
     readScore();
     $.get('/score/highscoreList', function (data) {
         $('#game').html(data);
+        $.get('/gameViews/restart_game', function (data) {
+            $('#game').append(data);
+        });
     });
-    $.get('/gameViews/restart_game', function (data) {
-        $('#game').append(data);
-    });
+
 }
 
 function addAscore(event) {
@@ -209,14 +210,18 @@ function win_lose(status) {
 
     $.get('/gameViews/WinLose/'+ status, function (data) {
         $('#game').html(data);
+        $.get('/score/highscoreList', function (data) {
+            $('#game').append(data);
+            $.get('/score/addHighscore/'+score, function (data) {
+                $('#game').append(data);
+                $.get('/gameViews/restart_game', function (data) {
+                    $('#game').append(data);
+                });
+            });
+
+        });
+
     });
-    $.get('/score/highscoreList', function (data) {
-        $('#game').append(data);
-    });
-    $.get('/score/addHighscore/'+score, function (data) {
-        $('#game').append(data);
-    });
-    $.get('/gameViews/restart_game', function (data) {
-        $('#game').append(data);
-    });
+
+
 }
