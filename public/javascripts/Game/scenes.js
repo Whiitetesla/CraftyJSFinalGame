@@ -7,13 +7,16 @@ Crafty.defineScene('Greetings', function () {
 
     Crafty.e('2D, DOM, Text')
         .attr({ x: 0, y: 0 })
-        .text('Greetings!');
+        .text('Greetings!')
+        .textColor('#ffffff');
 
-    this.restart_game = function() {Crafty.enterScene('PongGame');};
-    this.bind('KeyDown', this.restart_game);
+    $.get('/gameViews/Greetings', function (data) {
+        $('#game').html(data);
+    });
+
 
 }, function () {
-    this.unbind('KeyDown', this.restart_game);
+    $('#game').empty();
 });
 
 Crafty.defineScene('PongGame', function () {
@@ -56,12 +59,12 @@ Crafty.defineScene('PongGame', function () {
 
     this.show_victory = this.bind('BrickBroken', function () {
         if (!Crafty('Brick').length) {
-            Crafty.scene('TowerJumper');
+            Crafty.scene('Victory');
         }
     });
 
     this.show_lose = this.bind('LOSE', function () {
-        Crafty.scene('TowerJumper');
+        Crafty.scene('Lose');
     })
 }, function () {
     this.unbind('BrickBroken', this.show_victory);
@@ -83,8 +86,8 @@ Crafty.defineScene('TowerJumper', function () {
         .attr({x: screenWidth-wallThickness, y: 0, w: wallThickness, h: screenHeight*2})
         .color('#003dc5');
 
-    Crafty.e('Wall, 2D, Canvas, Solid, Color')
-        .attr({x: 0, y: screenHeight-300, w: screenWidth * 2, h: wallThickness})
+    Crafty.e('TopFloor, 2D, Canvas, Solid, Color')
+        .attr({x: 0, y: screenHeight/10, w: screenWidth * 2, h: wallThickness})
         .color('#94f700');
 
     Crafty.e('Celling, 2D, Canvas, Solid, Color')
@@ -98,7 +101,6 @@ Crafty.defineScene('TowerJumper', function () {
 
 
     var player = Crafty.e('TowerPlayer');
-    player.canJump = false;
 
     this.show_victory = this.bind('BrickBroken', function () {
         if (!Crafty('Brick').length) {
@@ -117,25 +119,24 @@ Crafty.defineScene('TowerJumper', function () {
 Crafty.defineScene('Victory', function () {
     Crafty.e('2D, DOM, Text')
         .attr({ x: 0, y: 0 })
-        .text('Victory!');
+        .text('Victory!')
+        .textColor('#ffffff');
 
-    this.restart_game = function() {Crafty.enterScene('Greetings');};
-    this.bind('KeyDown', this.restart_game);
+    win_lose('Victory');
 
 }, function () {
-    this.unbind('KeyDown', this.restart_game);
 });
 
 Crafty.defineScene('Lose', function () {
     Crafty.e('2D, DOM, Text')
         .attr({ x: 0, y: 0 })
-        .text('Lose!');
+        .text('Lose!')
+        .textColor('#ffffff');
 
-    this.restart_game = function() {Crafty.enterScene('Greetings');};
-    this.bind('KeyDown', this.restart_game);
+    win_lose('GameOver');
+
 
 }, function () {
-    this.unbind('KeyDown', this.restart_game);
 });
 
 function SpawnBricks(MAX_BRICKS) {
@@ -177,4 +178,45 @@ function SpawnBricks(MAX_BRICKS) {
                 .attr({x: (i*width)+width, y: (j*height)+height*2, w: width, h: height});
         }
     }
+}
+
+function ShowHighScore() {
+    readScore();
+    $.get('/score/highscoreList', function (data) {
+        $('#game').html(data);
+    });
+    $.get('/gameViews/restart_game', function (data) {
+        $('#game').append(data);
+    });
+}
+
+function addAscore(event) {
+    createScore(event);
+    ShowHighScore();
+}
+
+function play_game() {
+    Crafty.enterScene('PongGame')
+}
+
+function restart_game() {
+    StopGame();
+    StartGame();
+}
+
+function win_lose(status) {
+    readScore();
+
+    $.get('/gameViews/WinLose/'+ status, function (data) {
+        $('#game').html(data);
+    });
+    $.get('/score/highscoreList', function (data) {
+        $('#game').append(data);
+    });
+    $.get('/score/addHighscore/'+score, function (data) {
+        $('#game').append(data);
+    });
+    $.get('/gameViews/restart_game', function (data) {
+        $('#game').append(data);
+    });
 }

@@ -31,9 +31,15 @@ router.delete('/deletescore/:id', function (req, res) {
     });
 });
 
-router.get('/highscoress', function (req, res) {
-    res.json('HelloWorld');
+router.get('/highscoreList', function (req, res) {
+    res.render('highscoreList');
 });
+
+router.get('/addHighscore/:score', function (req, res) {
+    res.render('addScore', { score: (req.params.score) } );
+});
+
+
 module.exports = router;
 
 

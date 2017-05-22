@@ -1,7 +1,8 @@
 /**
  * Created by Niels Hviid Lund on 07-05-2017.
  */
-var ball_vy = 2;
+var BALL_VY_CONST = 4;
+var ball_vy = -BALL_VY_CONST;
 var ball_vx = (Math.floor(Math.random()*2));
 
 Crafty.c('PongPlayer',{
@@ -21,7 +22,7 @@ Crafty.c('PongPlayer',{
 
 Crafty.c('Ball',{
     init: function () {
-        this.requires('Canvas, Text, Solid, Collision, Tween, ballGrey_04')
+        this.requires('Canvas, Text, Solid, Collision, ballGrey_04')
             .attr({x: screenWidth/2, y: screenHeight/1.3,w: screenWidth/30, h: screenHeight/20})
 
             .onHit("PongPlayer", function (hitDatas) {
@@ -36,7 +37,7 @@ Crafty.c('Ball',{
                     ball_vx = Math.floor(Math.random()*5)+1;
                 }
 
-                ball_vy = -(Math.floor(Math.random()*5)+2);
+                ball_vy = -BALL_VY_CONST;
 
             })
             .onHit("Wall", function (hitDatas) {
@@ -68,14 +69,18 @@ Crafty.c('Ball',{
 
 Crafty.c('TowerPlayer',{
     init: function (){
-        this.requires('Canvas, Solid, Twoway, Jumper, Gravity, Collision, Player1_ready')
-            .attr({x: screenWidth/2, y: screenHeight/1.1, w: screenWidth/10, h: screenHeight/10})
+        this.requires('Canvas, Solid, Twoway, Jumper, Gravity, Collision, GroundAttacher, Player1_ready')
+            .attr({x: screenWidth/2, y: screenHeight/1.5, w: screenWidth/10, h: screenHeight/10})
             .twoway(400,1)
             .jumper(300, ['UP_ARROW', 'W'])
             .gravity('Floor')
             .gravityConst(250)
             .origin('center')
-
+            .bind("CheckLanding", function(ground) {
+                if (this.y + this.h > ground.y + this.dy) {
+                    this.canLand = false;
+                }
+            })
             .bind('Moved', function (evt) {
                 if(this.hit('Wall')){
                     this[evt.axis] = evt.oldValue;
@@ -84,7 +89,6 @@ Crafty.c('TowerPlayer',{
                 if(!!Crafty.keydown[Crafty.keys.UP_ARROW]){
                     if(this.canJump){
                         this.jump();
-                        this.y -= 100;
                     }
 
                 }

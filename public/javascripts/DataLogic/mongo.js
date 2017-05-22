@@ -6,21 +6,22 @@ var scoreListData = [];
 
 //setup the database and all the button functions
 function setupDB() {
-    // Populate the user table on initial pagel oad
-    readScore();
+    // Populate the user table on initial page oad
+    //readScore();
     // Add button click
     $('#btnAddScore').on('click', createScore);
 
+
     //show user link click
-    $('#scoreList table tbody').on('click', 'td a.linkshowscore', readAScore);
+    //$('#scoreList table tbody').on('click', 'td a.linkshowscore', readAScore);
     // Delete User link click
-    $('#scoreList table tbody').on('click', 'td a.linkdeletescore', deleteScore);
+    //$('#scoreList table tbody').on('click', 'td a.linkdeletescore', deleteScore);
 }
 
 // Create
 function createScore(event) {
     // Prevent Link from Firing
-    event.preventDefault();
+    //event.preventDefault();
     // Super basic validation - increase errorCountvariable if any fields are blank
     var errorCount = 0;
     $('#addScore input').each(function (index, val) {
@@ -53,13 +54,10 @@ function createScore(event) {
         alert('Please fill in all fields');
         return false;
     }
-};
+}
 
 // Read all
 function readScore() {
-    $.getJSON('/score/highscoress', function (data) {
-        console.log(data);
-    });
 
     // Empty content string
     var tableContent = '';
@@ -73,7 +71,6 @@ function readScore() {
                 + this.name + '</a></td>';
             tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
                 + this.score + '</a></td>';
-            tableContent += '<td><a href="#" class="linkdeletescore" rel="' + this._id + '"><i class="fa fa-trash" aria-hidden="true"></i></a></td>';
             tableContent += '</tr>';
         });
         // Inject the whole content string into our existing HTML table
@@ -123,3 +120,4 @@ function deleteScore(event) {
         return false;
     }
 }
+
