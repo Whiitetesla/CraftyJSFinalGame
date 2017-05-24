@@ -72,9 +72,9 @@ Crafty.c('TowerPlayer',{
         this.requires('Canvas, Solid, Twoway, Jumper, Gravity, Collision, GroundAttacher, Player1_ready')
             .attr({x: screenWidth/2, y: screenHeight/1.5, w: screenWidth/10, h: screenHeight/10})
             .twoway(400,1)
-            .jumper(300, ['UP_ARROW', 'W'])
+            .jumper(600, ['UP_ARROW', 'W'])
             .gravity('Floor')
-            .gravityConst(250)
+            .gravityConst(500)
             .origin('center')
             .bind("CheckLanding", function(ground) {
                 if (this.y + this.h > ground.y + this.dy) {
@@ -84,13 +84,12 @@ Crafty.c('TowerPlayer',{
             .bind('Moved', function (evt) {
                 if(this.hit('Wall')){
                     this[evt.axis] = evt.oldValue;
-                    this.canJump = true;
                 }
-                if(!!Crafty.keydown[Crafty.keys.UP_ARROW]){
-                    if(this.canJump){
-                        this.jump();
-                    }
-
+            })
+            .bind("EnterFrame", function () {
+                if (this.y > screenHeight){
+                    this.destroy();
+                    Crafty.trigger('TLOSE', this);
                 }
             });
     }
