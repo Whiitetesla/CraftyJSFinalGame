@@ -40,12 +40,12 @@ Crafty.defineScene('PongGame', function () {
 
     Crafty.e('PongPlayer');
 
-    scoreText = Crafty.e('2D, DOM, Text')
+    scoreText = Crafty.e('2D, DOM, Canvas, Text')
         .attr({
             x: screenWidth - 100,
             y: 10
         })
-        .textColor('#515151');
+        .textColor('#51cf00');
 
     scoreText.text('Hit:' + score);
 
@@ -59,7 +59,7 @@ Crafty.defineScene('PongGame', function () {
 
     this.show_victory = this.bind('BrickBroken', function () {
         if (!Crafty('Brick').length) {
-            Crafty.scene('Victory');
+            Crafty.scene('TowerJumper');
         }
     });
 
@@ -73,8 +73,23 @@ Crafty.defineScene('PongGame', function () {
 
 Crafty.defineScene('TowerJumper', function () {
     var wallThickness = 10;
+    var gameStart = Crafty.frame();
 
-    Crafty.e('Floor, 2D, Canvas, Solid, Color')
+    scoreText = Crafty.e('2D, DOM, Canvas, Text')
+        .attr({
+            x: screenWidth - 100,
+            y: 10
+        })
+        .textColor('#51cf00');
+
+    scoreText.text('Hit:' + score);
+
+    scoreText.textFont({
+        size: '30px',
+        weight: 'bold'
+    });
+
+    Crafty.e('Ground,Floor, 2D, Canvas, Solid, Color')
         .attr({x: 0, y: screenHeight/1.1, w: screenWidth * 2, h: wallThickness})
         .color('#b500cf');
 
@@ -86,34 +101,55 @@ Crafty.defineScene('TowerJumper', function () {
         .attr({x: screenWidth-wallThickness, y: 0, w: wallThickness, h: screenHeight*2})
         .color('#003dc5');
 
-    Crafty.e('TopFloor, 2D, Canvas, Solid, Color')
-        .attr({x: 0, y: screenHeight/10, w: screenWidth * 2, h: wallThickness})
-        .color('#94f700');
-
     Crafty.e('Celling, 2D, Canvas, Solid, Color')
         .attr({x: 0, y: 0, w: screenWidth * 2, h: wallThickness})
         .color('#333333');
 
-    Crafty.e('2D, DOM, Text')
-        .attr({ x: 0, y: 0 })
-        .text('TowerJumper!')
-        .textColor('#ffffff');
-
-
     var player = Crafty.e('TowerPlayer');
 
-    this.show_victory = this.bind('BrickBroken', function () {
-        if (!Crafty('Brick').length) {
-            Crafty.scene('Victory');
+    this.doDrop = Crafty.bind("EnterFrame", function(){
+        if (Crafty.frame() % 100 === 0){
+            var frame = Crafty.frame() - gameStart;
+            score++;
+            scoreText.text('Hit:' + score);
+
+            if(frame < 400){
+                drop('ground_cake');
+            }else if(frame < 800){
+                drop('ground_grass');
+            }else if(frame < 1200){
+                drop('ground_sand');
+            }else if(frame < 1600){
+                drop('ground_snow');
+            }else if(frame < 2000){
+                drop('ground_stone');
+            }else if(frame < 2400){
+                drop('ground_wood');
+            }else{
+                Crafty.trigger('TWin', this);
+            }
+        }
+
+        if(player.y > screenHeight){
+            Crafty.trigger('TLOSE', this);
         }
     });
 
-    this.show_lose = this.bind('LOSE', function () {
-        Crafty.scene('Lose');
+    this.show_victory = this.bind('TWin', function () {
+        if (Crafty('TowerPlayer').length) {
+            Crafty.scene('Lose');
+        }
+    });
+
+    this.show_lose = this.bind('TLOSE', function () {
+        if (!Crafty('TowerPlayer').length) {
+            Crafty.scene('Lose');
+        }
     })
 }, function () {
-    this.unbind('BrickBroken', this.show_victory);
-    this.unbind('LOSE', this.show_lose);
+    this.unbind('TWin', this.show_victory);
+    this.unbind('TLOSE', this.show_lose);
+    this.unbind('EnterFrame', this.doDrop);
 });  // end of game scenes
 
 Crafty.defineScene('Victory', function () {
@@ -224,4 +260,27 @@ function win_lose(status) {
     });
 
 
+}
+
+function drop(tileName)
+{
+    var floorString = 'Floor ,2D, Canvas, Solid, Gravity, Collision, ' + tileName;
+
+    var randomx = Math.floor((Math.random() * screenWidth));
+
+    Crafty.e(floorString)
+        .attr({x: randomx, y: 0, w: 240, h: 40})
+        .gravity()
+        .gravityConst(15)
+        .onHit("Ground", function (hitDatas) {
+            for(i = 0; i< hitDatas.length; i++){
+                hitDatas[i].obj.destroy();
+            }
+        })
+        .bind("EnterFrame", function() {
+            if (this.y > screenHeight){
+                this.destroy();
+                Crafty.trigger('TLOSE', this);
+            }
+        });
 }
