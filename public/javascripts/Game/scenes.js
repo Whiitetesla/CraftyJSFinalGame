@@ -42,12 +42,12 @@ Crafty.defineScene('PongGame', function () {
 
     scoreText = Crafty.e('2D, DOM, Canvas, Text')
         .attr({
-            x: screenWidth - 100,
+            x: screenWidth - 150,
             y: 10
         })
         .textColor('#51cf00');
 
-    scoreText.text('Hit:' + score);
+    scoreText.text('score:' + score);
 
     scoreText.textFont({
         size: '30px',
@@ -77,12 +77,12 @@ Crafty.defineScene('TowerJumper', function () {
 
     scoreText = Crafty.e('2D, DOM, Canvas, Text')
         .attr({
-            x: screenWidth - 100,
+            x: screenWidth - 150,
             y: 10
         })
         .textColor('#51cf00');
 
-    scoreText.text('Hit:' + score);
+    scoreText.text('score:' + score);
 
     scoreText.textFont({
         size: '30px',
@@ -111,7 +111,7 @@ Crafty.defineScene('TowerJumper', function () {
         if (Crafty.frame() % 100 === 0){
             var frame = Crafty.frame() - gameStart;
             score++;
-            scoreText.text('Hit:' + score);
+            scoreText.text('score:' + score);
 
             if(frame < 400){
                 drop('ground_cake');
@@ -242,28 +242,20 @@ function restart_game() {
 }
 
 function win_lose(status) {
-    readScore();
-
     $.get('/gameViews/WinLose/'+ status, function (data) {
         $('#game').html(data);
-        $.get('/score/highscoreList', function (data) {
+        $.get('/score/addHighscore/'+score, function (data) {
             $('#game').append(data);
-            $.get('/score/addHighscore/'+score, function (data) {
+            $.get('/gameViews/restart_game', function (data) {
                 $('#game').append(data);
-                $.get('/gameViews/restart_game', function (data) {
-                    $('#game').append(data);
-                });
             });
-
         });
-
     });
 
 
 }
 
-function drop(tileName)
-{
+function drop(tileName) {
     var floorString = 'Floor ,2D, Canvas, Solid, Gravity, Collision, ' + tileName;
 
     var randomx = Math.floor((Math.random() * screenWidth));
