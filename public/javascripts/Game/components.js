@@ -3,12 +3,12 @@
  */
 var BALL_VY_CONST = 4;
 var ball_vy = -BALL_VY_CONST;
-var ball_vx = (Math.floor(Math.random()*2));
+var ball_vx = 0;
 
 Crafty.c('PongPlayer',{
     init: function (){
         this.requires('Canvas, Solid, Twoway, Gravity, Collision, paddle1')
-            .attr({x: screenWidth/2, y: screenHeight/1.1, w: screenWidth/10, h: screenHeight/32})
+            .attr({x: screenWidth/2.2, y: screenHeight/1.1, w: screenWidth/10, h: screenHeight/32})
             .twoway(400,1)
             .gravity('Floor')
             .gravityConst(250)
@@ -24,6 +24,7 @@ Crafty.c('Ball',{
     init: function () {
         this.requires('Canvas, Text, Solid, Collision, ballGrey_04')
             .attr({x: screenWidth/2, y: screenHeight/1.3,w: screenWidth/30, h: screenHeight/20})
+            .origin('center')
 
             .onHit("PongPlayer", function (hitDatas) {
                 ball_vy = -ball_vy;
@@ -51,7 +52,7 @@ Crafty.c('Ball',{
                 for(i = 0; i< hitDatas.length; i++){
                     hitDatas[i].obj.destroy();
                     score++;
-                    scoreText.text('Hit:' + score);
+                    scoreText.text('score:' + score);
                     Crafty.trigger('BrickBroken', this);
                 }
 
