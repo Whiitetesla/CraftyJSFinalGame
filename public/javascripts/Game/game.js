@@ -56,29 +56,14 @@ function StartGame() {
             },
             //Coins
             "/images/Coins/spritesheet_coins.png": {
-                "tile": 128,
-                "tileh": 128,
+                "tile": 150,
+                "tileh": 150,
                 "map": {
                     "coins_01": [0, 0],
                     "coins_02": [0, 1],
                     "coins_03": [0, 2],
                     "coins_04": [0, 3],
-                    "coins_05": [0, 4],
-                    "coins_06": [0, 5],
-                    "coins_07": [1, 0],
-                    "coins_08": [1, 1],
-                    "coins_9": [1, 2],
-                    "coins_10": [1, 3],
-                    "coins_11": [1, 4],
-                    "coins_12": [1, 5],
-                    "coins_13": [2, 0],
-                    "coins_14": [2, 1],
-                    "coins_15": [2, 2],
-                    "coins_16": [2, 3],
-                    "coins_17": [2, 4],
-                    "coins_18": [2, 5],
-                    "coins_13": [3, 1],
-                    "coins_20": [3, 2],
+                    "coins_05": [0, 4]
                 }
             },
             //Enviromment

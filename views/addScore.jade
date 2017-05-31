@@ -2,7 +2,7 @@
    Created by Niels Hviid Lund on 19-05-2017.
 
 
-h2 Add Your Score #{score}
+h2(style="color:red;") Add Your Score #{score}
 #addScore
     fieldset
         input#inputName(type='text', placeholder='Name')
@@ -11,5 +11,5 @@ h2 Add Your Score #{score}
         br
         button(type='button', class='btn btn-primary' id='btnAddScore', onclick='addAscore()') Add Score
 
-p if you press this button you can no longer sumit your highscore
+h3(style="color:red;") if you press 'Show Highscore' you can no longer sumit your highscore
 button( id='showHighScore' class='btn btn-primary' onclick='ShowHighScore()') Show Highscore

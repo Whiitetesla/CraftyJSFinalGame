@@ -36,19 +36,39 @@ function createScore(event) {
             'name': $('#addScore fieldset input#inputName').val(),
             'score': $('#addScore fieldset input#inputScore').val()
         };
-        // Use AJAX to post the object to our adduserservice
-        $.ajax({type: 'POST', data: newScore, url: '/score/addhighscore', dataType: 'JSON'}).done(function (response) {
-            // Check for successful (blank) response
-            if (response.msg === '') {
-                // Clear the form inputs
-                $('#addScore fieldset input').val(''); // Update the table
-                readScore();
-            } else {
-                // If something goes wrong,
-                // alert the error message that our service returned
-                alert('Error: ' + response.msg);
-            }
+
+        $.each(scoreListData, function () {
+            $.ajax({
+                type: 'DELETE', url: '/score/deletescore/' + this._id
+            }).done(function (response) {
+                // Check for a successful (blank) response
+                if (response.msg === '') {
+                } else {
+                    alert('Error: ' + response.msg);
+                }
+            });
         });
+
+
+        scoreListData.push(newScore);
+        sortScores();
+        // Use AJAX to post the object to our adduserservice
+        for (i = 0; i < 10; i++){
+            if(scoreListData[i] != null){
+                $.ajax({type: 'POST', data: scoreListData[i], url: '/score/addhighscore', dataType: 'JSON'}).done(function (response) {
+                    // Check for successful (blank) response
+                    if (response.msg === '') {
+                        // Clear the form inputs
+                        $('#addScore fieldset input').val(''); // Update the table
+                    } else {
+                        // If something goes wrong,
+                        // alert the error message that our service returned
+                        alert('Error: ' + response.msg);
+                    }
+                });
+            }
+        }
+        readScore();
     } else {
         // If errorCountis more than 0, error out
         alert('Please fill in all fields');
@@ -58,14 +78,15 @@ function createScore(event) {
 
 // Read all
 function readScore() {
-
     // Empty content string
     var tableContent = '';
     // jQuery AJAX call for JSON
     $.getJSON('/score/highscore', function (data) {
         scoreListData = data;
+        sortScores();
+
         // For each item in our JSON, add a table row and cells to the content string
-        $.each(data, function () {
+        $.each(scoreListData, function () {
             tableContent += '<tr>';
             tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
                 + this.name + '</a></td>';
@@ -121,3 +142,8 @@ function deleteScore(event) {
     }
 }
 
+function sortScores() {
+
+    scoreListData.sort(function(a,b) {return (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0);} );
+
+}
