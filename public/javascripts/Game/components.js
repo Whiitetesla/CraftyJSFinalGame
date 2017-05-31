@@ -22,9 +22,12 @@ Crafty.c('PongPlayer',{
 
 Crafty.c('Ball',{
     init: function () {
-        this.requires('Canvas, Text, Solid, Collision, ballGrey_04')
+        this.requires('Canvas, Text, Solid, Collision, ballGrey_04, SpriteAnimation')
             .attr({x: screenWidth/2, y: screenHeight/1.3,w: screenWidth/30, h: screenHeight/20})
             .origin('center')
+
+            .reel("spin", 1500, 2, 4, -3)
+            .animate("spin", -1)
 
             .onHit("PongPlayer", function (hitDatas) {
                 ball_vy = -ball_vy;
@@ -70,7 +73,7 @@ Crafty.c('Ball',{
 
 Crafty.c('TowerPlayer',{
     init: function (){
-        this.requires('Canvas, Solid, Twoway, Jumper, Gravity, Collision, GroundAttacher, Player1_ready')
+        this.requires('Canvas, Solid, Twoway, Jumper, Gravity, Collision, GroundAttacher, Player1_stand')
             .attr({x: screenWidth/2, y: screenHeight/1.5, w: screenWidth/10, h: screenHeight/10})
             .twoway(400,1)
             .jumper(600, ['UP_ARROW', 'W'])
@@ -91,6 +94,27 @@ Crafty.c('TowerPlayer',{
                 if (this.y > screenHeight){
                     this.destroy();
                     Crafty.trigger('TLOSE', this);
+                }
+            });
+    }
+});
+
+Crafty.c('Coin',{
+    init: function () {
+        this.requires('Canvas, Text,  Solid, Gravity, Collision, coins_01, SpriteAnimation')
+            .gravity('Floor')
+            .gravityConst(500)
+            .origin('center')
+            .reel("spin", 1500, 0, 0, 5)
+            .animate("spin", -1)
+            .onHit("TowerPlayer", function (hitDatas) {
+                score++;
+                scoreText.text('score:' + score);
+                this.destroy();
+            })
+            .bind("EnterFrame", function() {
+                if (this.y > screenHeight){
+                    this.destroy();
                 }
             });
     }
