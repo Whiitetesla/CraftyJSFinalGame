@@ -225,7 +225,7 @@ function addAscore(event) {
 }
 
 function play_game() {
-    Crafty.enterScene('TowerJumper')
+    Crafty.enterScene('PongGame')
 }
 
 function restart_game() {
