@@ -111,17 +111,17 @@ Crafty.defineScene('TowerJumper', function () {
             score++;
             scoreText.text('score:' + score);
 
-            if(frame < 400){
+            if(frame < 4000){
                 drop('ground_cake');
-            }else if(frame < 800){
+            }else if(frame < 8000){
                 drop('ground_grass');
-            }else if(frame < 1200){
+            }else if(frame < 12000){
                 drop('ground_sand');
-            }else if(frame < 1600){
+            }else if(frame < 16000){
                 drop('ground_snow');
-            }else if(frame < 2000){
+            }else if(frame < 20000){
                 drop('ground_stone');
-            }else if(frame < 2400){
+            }else if(frame < 24000){
                 drop('ground_wood');
             }else{
                 Crafty.trigger('TWin', this);
