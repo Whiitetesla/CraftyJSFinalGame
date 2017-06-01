@@ -209,6 +209,7 @@ function SpawnBricks(MAX_BRICKS) {
 }
 
 function ShowHighScore() {
+    Crafty.background('#000000 url(/images/Background/bg_layer3.png) no-repeat center center');
     readScore();
     $.get('/score/highscoreList', function (data) {
         $('#game').html(data);
@@ -249,10 +250,10 @@ function win_lose(status) {
 
 function drop(tileName) {
     var floorString = 'Floor ,2D, Canvas, Solid, Gravity, Collision, ' + tileName;
-    var randomx = Math.floor((Math.random() * screenWidth-240));
-
-    if(randomx < 0){
+    var randomx = 0;
+    while (randomx <= 0){
         randomx = 0;
+        randomx = Math.floor((Math.random() * screenWidth-240));
     }
 
     switch (Math.floor(Math.random()*3)){
