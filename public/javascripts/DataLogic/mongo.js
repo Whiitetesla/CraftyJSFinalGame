@@ -144,6 +144,6 @@ function deleteScore(event) {
 
 function sortScores() {
 
-    scoreListData.sort(function(a,b) {return (a.score < b.score) ? 1 : ((b.score < a.score) ? -1 : 0);} );
+    scoreListData.sort(function (a, b) {  return b.score - a.score;  });
 
 }
