@@ -3,7 +3,7 @@
  */
 
 $(document).ready(function () {
-        //setupDB();
+        $('body').append("<button type='button', class='btn btn-primary' id='btnPlayGame'>Play Game</button>");
 
         $('#btnPlayGame').on('click', playGame);
 
@@ -20,8 +20,10 @@ $(document).ready(function () {
 function playGame() {
     if (!isGameRuning()) {
         StartGame();
+        $('#btnPlayGame').hide();
     } else {
         StopGame();
+        $('#btnPlayGame').show();
     }
 }
 
