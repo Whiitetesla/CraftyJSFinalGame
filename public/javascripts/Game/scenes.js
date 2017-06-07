@@ -112,17 +112,17 @@ Crafty.defineScene('TowerJumper', function () {
             scoreText.text('score:' + score);
 
             if(frame < 4000){
-                drop('ground_cake',frame);
+                drop('ground_stone',frame);
             }else if(frame < 8000){
-                drop('ground_grass',frame);
-            }else if(frame < 12000){
                 drop('ground_sand',frame);
+            }else if(frame < 12000){
+                drop('ground_grass',frame);
             }else if(frame < 16000){
                 drop('ground_snow',frame);
             }else if(frame < 20000){
-                drop('ground_stone',frame);
-            }else if(frame < 24000){
                 drop('ground_wood',frame);
+            }else if(frame < 24000){
+                drop('ground_cake',frame);
             }else{
                 Crafty.trigger('TWin', this);
             }
@@ -226,7 +226,7 @@ function addAscore(event) {
 }
 
 function play_game() {
-    Crafty.enterScene('PongGame')
+    Crafty.enterScene('PongGame');
 }
 
 function restart_game() {
@@ -251,6 +251,9 @@ function win_lose(status) {
 function drop(tileName,frame) {
     var floorString = 'Floor ,2D, Canvas, Solid, Gravity, Collision, ' + tileName;
     var randomx = 0;
+    var dropspeed = 10.0+(frame/1000);
+    console.log(dropspeed);
+
     while (randomx <= 0){
         randomx = 0;
         randomx = Math.floor((Math.random() * screenWidth-240));
@@ -273,7 +276,7 @@ function drop(tileName,frame) {
     Crafty.e(floorString)
         .attr({x: randomx, y: -50, w: 240, h: 40})
         .gravity()
-        .gravityConst(frame/100)
+        .gravityConst(dropspeed)
         .origin('center')
         .onHit("Ground", function (hitDatas) {
             for(i = 0; i< hitDatas.length; i++){
