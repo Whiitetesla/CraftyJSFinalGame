@@ -1,4 +1,11 @@
+link(rel='stylesheet', href='/stylesheets/gameIntro.css')
+
 #gameIntro
-    button( id='showHighScore' class='btn btn-primary' onclick='ShowHighScore()') Show Highscore
-    button( id='StartGame' class='btn btn-primary' onclick='play_game()') StartGame
-    button(type='button', class='btn btn-primary' id='btnPlayGame' onclick='playGame()') Exit Game
+    div(id='divStartGame',style="position:relative;")
+        h1 Welcome to the game of your life
+        p in this game you have to use the arrow keys to move your character around
+        button( id='StartGame' class='btn btn-primary' onclick='play_game()') StartGame
+    div(id='divHighScore',style="position:relative;")
+        button( id='showHighScore' class='btn btn-info' onclick='ShowHighScore()') Show Highscore
+    div(id='divExitGame',style="position:relative;")
+        button(type='button', class='btn btn-danger' id='btnExitGame' onclick='playGame()') Exit Game
