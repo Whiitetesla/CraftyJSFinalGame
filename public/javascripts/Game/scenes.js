@@ -18,6 +18,8 @@ Crafty.defineScene('PongGame', function () {
     var wallThickness = 10;
     var MAX_BRICKS = 64;
 
+    ball_vy = -BALL_VY_CONST;
+    ball_vx = 0;
     Crafty.background('#000000 url(/images/Background/bg_layer3.png) no-repeat center center');
 
     Crafty.e('Floor, 2D, Canvas, Solid, Color')
