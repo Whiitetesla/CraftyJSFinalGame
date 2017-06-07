@@ -1,0 +1,26 @@
+/**
+ * Created by Whiitetesla.
+ */
+#gameIntro{
+    text-align:center;
+}
+
+#divStartGame{
+    height: 266px;
+
+    position: absolute;
+    right:    0;
+    bottom:   0;
+}
+#divHighScore{
+    height: 266px;
+}
+#divExitGame{
+    height: 10px;
+    position: absolute;
+    right:    0;
+    bottom:   0;
+}
+h1,p{
+    color: #00b7ff;
+}

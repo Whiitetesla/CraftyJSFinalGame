@@ -86,16 +86,17 @@ function readScore() {
         sortScores();
 
         // For each item in our JSON, add a table row and cells to the content string
+        tableContent += '<ol>';
         $.each(scoreListData, function () {
-            tableContent += '<tr>';
-            tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
-                + this.name + '</a></td>';
-            tableContent += '<td><a href="#" class="linkshowscore" rel="' + this._id + '">'
-                + this.score + '</a></td>';
-            tableContent += '</tr>';
+            tableContent += '<li><mark href="#" class="linkshowscore" rel="' + this._id + '">'
+                + this.name + '</mark>';
+            tableContent += '<small href="#" class="linkshowscore" rel="' + this._id + '">'
+                + this.score + '</small></li>';
         });
+        tableContent += '</ol>';
         // Inject the whole content string into our existing HTML table
-        $('#scoreList table tbody').html(tableContent);
+        $('#scoreList').append(tableContent);
+        console.log($('#scoreList').html())
     });
 }
 
