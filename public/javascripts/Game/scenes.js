@@ -252,7 +252,6 @@ function drop(tileName,frame) {
     var floorString = 'Floor ,2D, Canvas, Solid, Gravity, Collision, ' + tileName;
     var randomx = 0;
     var dropspeed = 10.0+(frame/1000);
-    console.log(dropspeed);
 
     while (randomx <= 0){
         randomx = 0;

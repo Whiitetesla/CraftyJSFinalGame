@@ -68,7 +68,6 @@ function createScore(event) {
                 });
             }
         }
-        readScore();
     } else {
         // If errorCountis more than 0, error out
         alert('Please fill in all fields');
@@ -96,7 +95,6 @@ function readScore() {
         tableContent += '</ol>';
         // Inject the whole content string into our existing HTML table
         $('#scoreList').append(tableContent);
-        console.log($('#scoreList').html())
     });
 }
 
